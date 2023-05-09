@@ -55,11 +55,9 @@ class TunicWorld(World):
         csv_reader = csv.reader(locations_csv_file)
         next(csv_reader)  # skip header
         for entry in csv_reader:
-            is_valid = entry[3] == "1"
-            if is_valid:
-                location_name = entry[4]
-                location_name_to_id[location_name] = start_id
-                start_id += 1
+            location_name = entry[6]
+            location_name_to_id[location_name] = start_id
+            start_id += 1
 
     # Add Well locations which activate when enough Coins are dropped in
     for i in range(4):
