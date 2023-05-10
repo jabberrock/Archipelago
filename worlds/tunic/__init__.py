@@ -1,28 +1,21 @@
-import csv
-from pathlib import Path
-from BaseClasses import Item, Region, Location, Entrance, Tutorial, ItemClassification
+from BaseClasses import Item, Region, Location, Entrance, Tutorial
 from ..AutoWorld import World, WebWorld
-from dataclasses import dataclass
+from .ItemTemplates import item_template_by_name
+from .Locations import location_by_unique_name
+
 
 class TunicWebWorld(WebWorld):
     tutorials = [
         Tutorial(
-            tutorial_name='Setup Guide',
-            description='A guide to playing Tunic',
-            language='English',
-            file_name='guide_en.md',
-            link='guide/en',
-            authors=['Jabberrock']
+            tutorial_name="Tunic Setup Guide",
+            description="A guide to connect Tunic to Archipelago",
+            language="English",
+            file_name="guide_en.md",
+            link="guide/en",
+            authors=["Jabberrock"]
         )
     ]
 
-
-@dataclass
-class TunicItemTemplate:
-    name: str
-    item_classification: ItemClassification
-    num_checks: int
-    
 
 class TunicWorld(World):
     game = "Tunic"
@@ -30,61 +23,32 @@ class TunicWorld(World):
     data_version = 0
     web = TunicWebWorld()
 
-    # Load items from data file
-    item_list = {}
-    with open(Path(__file__).parent / "data" / "items.csv") as items_csv_file:
-        csv_reader = csv.reader(items_csv_file)
-        next(csv_reader)  # skip header
-        for entry in csv_reader:
-            item_name = entry[0]
-            item_classification = getattr(ItemClassification, entry[1])
-            num_checks = int(entry[5])
-            item_list[item_name] = TunicItemTemplate(item_name, item_classification, int(num_checks))
-
-    # Create item to ID mapping
     item_name_to_id = {}
     start_id = 1000
-    for item_name in item_list:
+    for item_name in item_template_by_name:
         item_name_to_id[item_name] = start_id
         start_id += 1
 
-    # Load locations from data file and create location to ID mapping
     location_name_to_id = {}
     start_id = 2000
-    with open(Path(__file__).parent / "data" / "locations.csv") as locations_csv_file:
-        csv_reader = csv.reader(locations_csv_file)
-        next(csv_reader)  # skip header
-        for entry in csv_reader:
-            location_name = entry[6]
-            location_name_to_id[location_name] = start_id
-            start_id += 1
-
-    # Add Well locations which activate when enough Coins are dropped in
-    for i in range(4):
-        location_name_to_id[f"Well - Redeem #{i + 1}"] = start_id
+    for location_name in location_by_unique_name:
+        location_name_to_id[location_name] = start_id
         start_id += 1
 
     def create_item(self, name: str) -> Item:
-        tunic_item = TunicItem(
+        return TunicItem(
             name,
-            self.item_list[name].item_classification,
+            item_template_by_name[name].item_classification,
             self.item_name_to_id[name],
             self.player
         )
-        return tunic_item
 
-    def create_items(self):
+    def create_items(self) -> None:
         item_pool = []
-        for item_name in self.item_list:
-            item = self.item_list[item_name]
-            for i in range(item.num_checks):
-                tunic_item = TunicItem(
-                    item.name,
-                    item.item_classification,
-                    self.item_name_to_id[item.name],
-                    self.player
-                )
-                item_pool.append(tunic_item)
+        for item_name in item_template_by_name:
+            item_template = item_template_by_name[item_name]
+            for i in range(item_template.num_checks):
+                item_pool.append(self.create_item(item_template.name))
 
         self.multiworld.random.shuffle(item_pool)
         self.multiworld.itempool += item_pool

@@ -54,7 +54,7 @@ Crypt Redux,Chest,Chest: $1,"(-60.0, 17.0, 13.0)",1,211,Dark Tomb - Guarded by M
 Crypt Redux,Chest,Chest: $1,"(-63.0, 17.0, 54.0)",1,212,Dark Tomb - Guarded by Lazers - Chest
 Crypt Redux,Chest,Chest: $20,"(-119.0, 17.0, 51.0)",1,210,Dark Tomb - Spikes Corner - Chest
 Crypt Redux,Chest,Chest: Firebomb x 2,"(-119.0, 17.0, 90.0)",1,53,Dark Tomb - Behind the Stairs
-Crypt Redux,Chest,Chest: Trinket - RTSR x 1,"(-79.0, 61.0, 76.0)",1,52,Dark Tomb - Top of Tomb - Chest
+Crypt Redux,Chest,Chest: Trinket - RTSR x 1,"(-79.0, 61.0, 76.0)",0,52,Dark Tomb - Top of Tomb - Chest
 Crypt Redux,Chest,Chest: Trinket Coin x 1,"(-23.0, 17.0, 65.0)",1,54,Dark Tomb - Hidden Lazer Path - Chest
 CubeRoom,Chest,Chest: Fairy,"(321.1, 3.0, 217.0)",1,0,Overworld - Rotation Cube Secret - Fairy
 Dusty,Chest,Chest: GoldenTrophy_11 x 1,"(57.5, 26.0, 43.8)",1,1011,Eastern Vault - Clean Up the Leaves - Golden Trophy
